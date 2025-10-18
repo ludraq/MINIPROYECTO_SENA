@@ -55,10 +55,11 @@ def menu():
             cancelar_reserva(id_r)
 
         elif opcion == "0":
-            print("👋 Saliendo del sistema...")
+            print(" Saliendo del sistema...")
             break
         else:
-            print("❌ Opción no válida.")
+            print(" Opción no válida.")
 
 if __name__ == "__main__":
     menu()
+
