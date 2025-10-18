@@ -18,7 +18,7 @@ class Database:
             self.conn = sqlite3.connect(self.db_name)
             return self.conn
         except Error as e:
-            print(f"❌ Error al conectar con la base de datos: {e}")
+            print(f" Error al conectar con la base de datos: {e}")
             return None
 
     def cerrar(self):
@@ -36,7 +36,7 @@ class Database:
             self.conn.commit()
             return cur
         except Error as e:
-            print(f"❌ Error al ejecutar la consulta: {e}")
+            print(f" Error al ejecutar la consulta: {e}")
             return None
 
     def crear_tablas(self):
@@ -100,9 +100,9 @@ class Database:
 
         for nombre, query in tablas.items():
             self.ejecutar(query)
-            print(f"✅ Tabla '{nombre}' verificada o creada.")
+            print(f" Tabla '{nombre}' verificada o creada.")
 
-        print("\n📦 Base de datos inicializada correctamente.\n")
+        print("\n Base de datos inicializada correctamente.\n")
 
 # --- Ejecución directa (solo si se ejecuta este archivo) ---
 if __name__ == "__main__":
