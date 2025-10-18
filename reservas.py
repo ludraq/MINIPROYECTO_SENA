@@ -26,11 +26,11 @@ class Reserva:
         cur = db.ejecutar("SELECT id, nombre, apellidos, estado FROM clientes WHERE id=?", (reserva.cliente_id,))
         cliente_row = cur.fetchone() if cur else None
         if not cliente_row:
-            print(f"❌ El cliente con ID {reserva.cliente_id} no existe. Primero registre y liste clientes para ver los IDs.")
+            print(f" El cliente con ID {reserva.cliente_id} no existe. Primero registre y liste clientes para ver los IDs.")
             db.cerrar()
             return
         if cliente_row[3] != 'activo':
-            print("❌ El cliente existe pero está inactivo.")
+            print(" El cliente existe pero está inactivo.")
             db.cerrar()
             return
 
@@ -39,11 +39,11 @@ class Reserva:
         cur = db.ejecutar("SELECT id, tarifa, estado FROM habitaciones WHERE id=?", (reserva.habitacion_id,))
         habitacion = cur.fetchone()
         if not habitacion:
-            print("❌ La habitación no existe.")
+            print(" La habitación no existe.")
             db.cerrar()
             return
         if habitacion[2] != "disponible":
-            print("⚠️ La habitación no está disponible actualmente.")
+            print(" La habitación no está disponible actualmente.")
             db.cerrar()
             return
 
@@ -52,11 +52,11 @@ class Reserva:
             entrada = datetime.strptime(reserva.fecha_entrada, "%Y-%m-%d")
             salida = datetime.strptime(reserva.fecha_salida, "%Y-%m-%d")
             if salida <= entrada:
-                print("⚠️ La fecha de salida debe ser posterior a la de entrada.")
+                print(" La fecha de salida debe ser posterior a la de entrada.")
                 db.cerrar()
                 return
         except ValueError:
-            print("❌ Formato de fecha inválido (usa YYYY-MM-DD).")
+            print(" Formato de fecha inválido (usa YYYY-MM-DD).")
             db.cerrar()
             return
 
@@ -70,7 +70,7 @@ class Reserva:
         # params: habitacion_id, fecha_entrada, fecha_salida
         cur = db.ejecutar(query, (reserva.habitacion_id, reserva.fecha_entrada, reserva.fecha_salida))
         if cur and cur.fetchone()[0] > 0:
-            print("❌ La habitación ya está reservada en ese rango de fechas.")
+            print(" La habitación ya está reservada en ese rango de fechas.")
             db.cerrar()
             return
 
@@ -90,7 +90,7 @@ class Reserva:
         # Cambiar estado de la habitación a ocupado
         Habitacion.cambiar_estado(reserva.habitacion_id, "ocupado")
 
-        print(f"✅ Reserva creada con éxito. Total: ${total:,.0f}")
+        print(f" Reserva creada con éxito. Total: ${total:,.0f}")
         Reserva.registrar_log("creacion_reserva", f"Reserva creada para cliente {reserva.cliente_id}.")
         db.cerrar()
 
@@ -109,7 +109,7 @@ class Reserva:
         reservas = cur.fetchall()
         db.cerrar()
 
-        print("\n📅 LISTA DE RESERVAS:")
+        print("\n LISTA DE RESERVAS:")
         if not reservas:
             print("No hay reservas registradas.\n")
             return
@@ -134,7 +134,7 @@ class Reserva:
         reserva = cur.fetchone()
 
         if not reserva:
-            print("❌ No existe una reserva con ese ID.")
+            print(" No existe una reserva con ese ID.")
             db.cerrar()
             return
 
@@ -147,11 +147,11 @@ class Reserva:
             entrada_dt = datetime.strptime(fecha_entrada, "%Y-%m-%d")
             salida_dt = datetime.strptime(fecha_salida, "%Y-%m-%d")
             if salida_dt <= entrada_dt:
-                print("⚠️ La fecha de salida debe ser posterior a la de entrada.")
+                print(" La fecha de salida debe ser posterior a la de entrada.")
                 db.cerrar()
                 return
         except ValueError:
-            print("❌ Formato de fecha inválido (usa YYYY-MM-DD).")
+            print(" Formato de fecha inválido (usa YYYY-MM-DD).")
             db.cerrar()
             return
 
@@ -168,7 +168,7 @@ class Reserva:
         """
         db.ejecutar(query, (fecha_entrada, fecha_salida, nuevo_total, reserva_id))
 
-        print(f"✅ Reserva modificada con éxito. Nuevo total: ${nuevo_total:,.0f}")
+        print(f" Reserva modificada con éxito. Nuevo total: ${nuevo_total:,.0f}")
         Reserva.registrar_log("modificacion", f"Reserva {reserva_id} actualizada a nuevo total ${nuevo_total:,.0f}.")
         db.cerrar()
 
@@ -183,7 +183,7 @@ class Reserva:
         reserva = cur.fetchone()
 
         if not reserva:
-            print("❌ No se puede cancelar: reserva inexistente o ya cancelada.")
+            print(" No se puede cancelar: reserva inexistente o ya cancelada.")
             db.cerrar()
             return
 
@@ -192,7 +192,7 @@ class Reserva:
         # Liberar habitación
         Habitacion.cambiar_estado(reserva[0], "disponible")
 
-        print("⚙️ Reserva cancelada correctamente.")
+        print(" Reserva cancelada correctamente.")
         Reserva.registrar_log("cancelacion", f"Reserva {reserva_id} cancelada.")
         db.cerrar()
 
