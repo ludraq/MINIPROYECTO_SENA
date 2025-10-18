@@ -31,24 +31,24 @@ class Pago:
         cur = db.ejecutar("SELECT id, total, estado FROM reservas WHERE id=?", (self.reserva_id,))
         reserva = cur.fetchone()
         if not reserva:
-            print("❌ La reserva no existe.")
+            print(" La reserva no existe.")
             db.cerrar()
             return
 
         if reserva[2] != "activa":
-            print("⚠️ No se puede pagar una reserva que no está activa.")
+            print(" No se puede pagar una reserva que no está activa.")
             db.cerrar()
             return
 
         # Validar monto
         if self.monto < reserva[1]:
-            print(f"⚠️ El monto pagado (${self.monto:,.0f}) es inferior al total (${reserva[1]:,.0f}).")
+            print(f" El monto pagado (${self.monto:,.0f}) es inferior al total (${reserva[1]:,.0f}).")
             db.cerrar()
             return
 
         # Validar método
         if not Pago.validar_metodo(self.metodo):
-            print("❌ Método de pago no válido. Use: efectivo, tarjeta o transferencia.")
+            print(" Método de pago no válido. Use: efectivo, tarjeta o transferencia.")
             db.cerrar()
             return
 
@@ -83,7 +83,7 @@ class Pago:
 
         db.cerrar()
 
-        print(f"✅ Pago de la reserva {reserva_id} confirmado correctamente.")
+        print(f" Pago de la reserva {reserva_id} confirmado correctamente.")
         Pago.registrar_log("confirmacion_pago", f"Pago de la reserva {reserva_id} confirmado.")
 
     @staticmethod
@@ -99,7 +99,7 @@ class Pago:
         pagos = cur.fetchall()
         db.cerrar()
 
-        print("\n💰 HISTORIAL DE PAGOS:")
+        print("\n HISTORIAL DE PAGOS:")
         if not pagos:
             print("No se han realizado pagos.\n")
             return
@@ -126,3 +126,4 @@ if __name__ == "__main__":
     pago.procesar()
     time.sleep(5)
     Pago.listar()
+
