@@ -24,7 +24,7 @@ class Cliente:
         # Verificar si el cliente ya existe
         cur = db.ejecutar("SELECT * FROM clientes WHERE documento=?", (cliente.documento,))
         if cur.fetchone():
-            print("⚠️ Ya existe un cliente con ese documento.")
+            print(" Ya existe un cliente con ese documento.")
             db.cerrar()
             return
 
@@ -36,7 +36,7 @@ class Cliente:
                   cliente.correo, cliente.telefono, cliente.direccion)
 
         db.ejecutar(query, params)
-        print(f"✅ Cliente '{cliente.nombre} {cliente.apellidos}' registrado correctamente.")
+        print(f" Cliente '{cliente.nombre} {cliente.apellidos}' registrado correctamente.")
         Cliente.registrar_log("registro", f"Cliente {cliente.documento} registrado.")
         db.cerrar()
 
@@ -48,7 +48,7 @@ class Cliente:
         clientes = cur.fetchall()
         db.cerrar()
 
-        print("\n📋 LISTA DE CLIENTES REGISTRADOS:")
+        print("\n LISTA DE CLIENTES REGISTRADOS:")
         if not clientes:
             print("No hay clientes registrados.\n")
             return
@@ -66,11 +66,11 @@ class Cliente:
         db.cerrar()
 
         if cliente:
-            print("\n🔍 Cliente encontrado:")
+            print("\n Cliente encontrado:")
             print(f"ID: {cliente[0]}\nNombre: {cliente[1]} {cliente[2]}\nDocumento: {cliente[3]}")
             print(f"Correo: {cliente[4]}\nTeléfono: {cliente[5]}\nDirección: {cliente[6]}\nEstado: {cliente[7]}\n")
         else:
-            print("❌ No se encontró un cliente con ese documento.")
+            print(" No se encontró un cliente con ese documento.")
 
     @staticmethod
     def actualizar(documento, nuevo_correo=None, nuevo_telefono=None, nueva_direccion=None):
@@ -80,7 +80,7 @@ class Cliente:
         cliente = cur.fetchone()
 
         if not cliente:
-            print("❌ No existe un cliente con ese documento.")
+            print(" No existe un cliente con ese documento.")
             db.cerrar()
             return
 
@@ -92,7 +92,7 @@ class Cliente:
         WHERE documento = ?
         """
         db.ejecutar(query, (nuevo_correo, nuevo_telefono, nueva_direccion, documento))
-        print(f"✅ Cliente con documento {documento} actualizado correctamente.")
+        print(f" Cliente con documento {documento} actualizado correctamente.")
         Cliente.registrar_log("actualizacion", f"Cliente {documento} actualizado.")
         db.cerrar()
 
@@ -104,12 +104,12 @@ class Cliente:
         cliente = cur.fetchone()
 
         if not cliente:
-            print("❌ No existe un cliente con ese documento.")
+            print(" No existe un cliente con ese documento.")
             db.cerrar()
             return
 
         db.ejecutar("UPDATE clientes SET estado='inactivo' WHERE documento=?", (documento,))
-        print(f"⚙️ Cliente con documento {documento} ha sido desactivado.")
+        print(f" Cliente con documento {documento} ha sido desactivado.")
         Cliente.registrar_log("desactivacion", f"Cliente {documento} desactivado.")
         db.cerrar()
 
@@ -131,3 +131,4 @@ if __name__ == "__main__":
     Cliente.consultar_por_documento("123456789")
     Cliente.actualizar("123456789", nuevo_correo="juanp@correo.com")
     Cliente.desactivar("123456789")
+
